@@ -2,11 +2,18 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
 )
+
+var debug bool
+
+func init() {
+	flag.BoolVar(&debug, "debug", false, "enable debug mode")
+}
 
 func main() {
 	inputStrings := readFileLines("../inputs/day2.txt")
@@ -121,4 +128,10 @@ func splitNum(n int) (left, right int) {
 	num1, _ := strconv.Atoi(l)
 	num2, _ := strconv.Atoi(r)
 	return num1, num2
+}
+
+func debugPrint(s string) {
+	if debug {
+		fmt.Println(s)
+	}
 }
