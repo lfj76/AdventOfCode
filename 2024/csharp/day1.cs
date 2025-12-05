@@ -2,23 +2,23 @@ public static class Day1
 {
     public static void Solve()
     {
-        using StreamReader sr = new("../../inputs/day1.txt");
+        using StreamReader sr = new("../inputs/day1.txt");
 
-        List<int> left = new();
-        List<int> right = new();
+        List<int> left = [];
+        List<int> right = [];
 
         string? line;
         while ((line = sr.ReadLine()) != null)
         {
             string[] numbers = line.Split(' ', 2, options: StringSplitOptions.TrimEntries);
-            left.Add(Int32.Parse(numbers[0]));
-            right.Add(Int32.Parse(numbers[1]));
+            left.Add(int.Parse(numbers[0]));
+            right.Add(int.Parse(numbers[1]));
         }
 
         left.Sort();
         right.Sort();
 
-        List<int> distances = new();
+        List<int> distances = [];
 
         for (int i = 0; i < left.Count; i++)
         {
@@ -51,7 +51,6 @@ public static class Day1
             ll = ul;
             //Console.WriteLine($"ll: {ll}, lr: {lr}");
             //Console.ReadLine();
-
         }
 
         Console.WriteLine(similarity);
