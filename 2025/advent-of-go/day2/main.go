@@ -16,6 +16,8 @@ func init() {
 }
 
 func main() {
+	flag.Parse()
+	fmt.Println("debug mode:", debug)
 	inputStrings := readFileLines("../inputs/day2.txt")
 	res := solve2(inputStrings)
 	fmt.Println("Result:", res)
@@ -44,6 +46,7 @@ func solve2(inputs []string) int {
 		from, to, _ := parseInput(inputs[i])
 		for j := from; j <= to; j++ {
 			if hasRepeat(strconv.Itoa(j)) {
+				fmt.Println(fmt.Sprintf("found repeat in %d", j))
 				res += j
 			}
 		}
@@ -51,16 +54,29 @@ func solve2(inputs []string) int {
 	return res
 }
 
+// 7710710
 func hasRepeat(s string) bool {
 	x, xs := parse1(s)
 	if x == '\x00' {
 		return false
 	}
 
+	debugPrint(fmt.Sprintf("checking repeat for %s %s", string(x), xs))
 	return checkRepeat(string(x), xs)
 }
 
 func checkRepeat(x, xs string) bool {
+	if len(x) > len(xs) {
+		return false
+	}
+	if checkRepeating(x, xs) {
+		return true
+	}
+	debugPrint(fmt.Sprintf("checking repeat for %s with %s", x+string(xs[0]), xs[1:]))
+	return checkRepeat(x+string(xs[0]), xs[1:])
+}
+
+func checkRepeating(x, xs string) bool {
 	if len(x) > len(xs) {
 		return false
 	}
@@ -69,11 +85,12 @@ func checkRepeat(x, xs string) bool {
 	}
 	if x == xs[:len(x)] {
 		// check if x repeats further
-		if checkRepeat(x, xs[len(x):]) {
+		debugPrint(fmt.Sprintf("check repeating for %s with %s", x, xs[len(x):]))
+		if checkRepeating(x, xs[len(x):]) {
 			return true
 		}
 	}
-	return checkRepeat(x+string(xs[0]), xs[1:])
+	return false
 }
 
 func parse1(s string) (byte, string) {
@@ -100,6 +117,8 @@ func readFileLines(filePath string) []string {
 	for scanner.Scan() {
 		line = scanner.Text()
 	}
+	//line = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124"
+	//line = "1188511885-1188511885"
 	return strings.Split(line, ",")
 }
 
